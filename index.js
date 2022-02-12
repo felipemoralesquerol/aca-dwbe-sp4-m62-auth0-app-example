@@ -1,4 +1,5 @@
 require('dotenv').config();
+const morgan = require('morgan');
 const express = require('express');
 const { auth, requiresAuth } = require('express-openid-connect');
 
@@ -13,6 +14,7 @@ const config = {
     issuerBaseURL: process.env.AUTH0_ISSUERBASEURL
 };
 
+app.use(morgan('dev'));
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 app.use(auth(config));
 
@@ -27,5 +29,5 @@ app.get('/profile', requiresAuth(), (req, res) => {
 });
 
 app.listen(3000, () => {
-    console.log('Server iniciado http://localhost:3000')
+    console.log(`Server started ${process.env.WEB_URL}:${process.env.WEB_PORT}`)
 });
